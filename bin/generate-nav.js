@@ -114,6 +114,7 @@ var getFileTitle = function(file) {
 };
 
 var i18n_zh_CN = {
+    'weixin-course': '微信公众平台开发教程',
     'software': '软件人生',
     'cpp': 'C语言',
     'experiment': '上机实验报告',

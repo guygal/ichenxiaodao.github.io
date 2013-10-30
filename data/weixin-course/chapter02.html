@@ -1,5 +1,362 @@
-<div title="第02章." class="article-content">
-  <div class="sign">2013-05</div>
-  <h1>第02章.</h1>
+<div title="第02章.开发环境的搭建" class="article-content">
+  <div class="sign">2013年5月18日 01:21</div>
+<h1 align="center">
+    第02章.开发环境的搭建
+</h1>
+<p>
+    5.15晚上，『小道IT』突然多了好多的关注者。让小道很好奇，然后看了老贼当天推送的文章
+    <a target="_blank" href="http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MjgwNjgwMA%3D%3D&amp;amp;appmsgid=10000294&amp;amp;itemidx=1&amp;amp;scene=1#wechat_redirect">
+        《Discuz被收编三年后，互联网精神死没死！》
+    </a>
+    ，在文章后面他贴出了上次小道发给他的一段文字，这段文字里面刚好有小道IT的微信号，所以小道也就明白了。非常感谢老贼，这也是对小道的一种激励。
+</p>
+<p>
+    好了，开始正题。今天这篇是后面所有教程的基础，这个标题让小道想起了以前在大学里面写过的好些文档都是类似XXX开发环境的搭建，因为每当要开始学一个新技术的时候，第一件事情就是搭建开发环境。在此小道也很感谢小道的老师，是他叫小道写这种类似的文档，然后给学弟学妹们看的，否则小道不可能会有这个动力的。
+</p>
+<p>
+    小道想把这个教程写的让没有编程技术的童鞋都可以学会微信公众平台的开发，所以如果你是专业人士或编程高手，可以不要看了，因为这样只会浪费你的时间。
+</p>
+<p>
+    本文涉及到的所有软件都可以从小道的网盘下载，下载地址：<a target="_blank" href="http://share.xiaodao.co/">http://share.xiaodao.co</a>
+</p>
+<h2>
+    2.1 安装并配置JAVA
+</h2>
+<p>
+从网盘下载“jdk-6u12-windows-i586-p.exe”，因为小道所用的虚拟主机的Tomcat版本是6.0.18，所以选择JDK版本是6u12。如果你要下载其他版本或是其他操作系统的JDK，可以从这里下载：    <a target="_blank" href="http://www.oracle.com/technetwork/java/javase/archive-139210.html">http://www.oracle.com/technetwork/java/javase/archive-139210.html</a>
+</p>
+<h3>
+    2.1.1 安装JDK
+</h3>
+<p>
+    双击下载后的exe文件进入安装，下面将通过图片来详细展示整个安装过程。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.1-01.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-02.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-03.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-04.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-05.png" /><br>
+
+<h3>
+    2.1.2 配置JAVA环境变量
+</h3>
+<p>
+    安装完成之后，还需要设置一下环境变量。下面的截图是Windows7环境下的界面，如果你用的是其他操作系统，界面可能会有点不同，但是设置的位置大致都是一样的。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.1-06.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-07.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-08.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-09.png" /><br>
+
+<p align="left">
+    点击上图的“新建”，新建两个系统变量，分别是：
+</p>
+<table border="1" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <td width="111" valign="top">
+                <p align="left">
+                    <strong>变量名</strong>
+                </p>
+            </td>
+            <td width="457" valign="top">
+                <p align="left">
+                    <strong>变量值</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td width="111" valign="top">
+                <p align="left">
+                    JAVA_HOME
+                </p>
+            </td>
+            <td width="457" valign="top">
+                <p align="left">
+                    你前面JDK的安装目录，比如：E:\java\jdk1.6.0_12
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td width="111" valign="top">
+                <p align="left">
+                    CLASSPAHT
+                </p>
+            </td>
+            <td width="457" valign="top">
+                <p align="left">
+                    .;%JAVA_HOME%\lib\tools.jar;%JAVA_HOME%\lib\dt.jar
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<img src="resources/figure/weixin-course/chapter02/2.1-10.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-11.png" /><br>
+
+<p align="left">
+    编辑变量名为“Path”的变量值，在最前面增加%JAVA_HOME%\bin;，注意后面有一个分号的。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.1-12.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-13.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-14.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.1-15.png" /><br>
+
+<p align="left">
+    环境变量设置好了之后，测试一下设置是否生效了。打开“命令提示符”的窗口，输入“java -version”，如果显示如下图的信息，就表示JAVA的环境配置成功了。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.1-16.png" /><br>
+
+<h2>
+    2.2 配置Tomcat
+</h2>
+<p>
+    从网盘下载“apache-tomcat-6.0.18.rar”，你如果需要其他版本，请到这里下载：<a target="_blank" href="http://tomcat.apache.org/">http://tomcat.apache.org/</a>
+</p>
+<p>
+    解压这个压缩包到你想要放的目录，比如我解压到E:\java目录。按照下面的步骤来启动Tomcat。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.2-01.png" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.2-02.png" /><br>
+
+<p>
+    打开浏览器，输入“http://localhost:8080”，如果出现下面的页面，表示你的Tomcat也配置好了。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.2-03.png" /><br>
+
+<h2>
+    2.3 安装并激活MyEclipse
+</h2>
+<p>
+    其实用Eclipse也是可以的，但是小道比较习惯用MyEclipse开发Web相关的项目。但是MyEclipse不是免费的软件，也就涉及到了激活。
+</p>
+<p>
+    受到“鬼脚七”的影响，小道现在用盗版的东西，想法和以前会有很大的变化。“鬼脚七”也是一个小道很喜欢的公众号，大家可以去关注：taobaoguijiaoqi
+</p>
+<p>
+    还有一个“道哥的黑板报”，自从知道他也叫道哥以后，小道再也不敢称自己是道哥了。他的微信号：taosay
+</p>
+<h3>
+    2.3.1 安装MyEclipse
+</h3>
+<p>
+    从网盘下载“MyEclipse_9.0安装包.zip”之后解压到任意目录，运行解压之后文件夹里面的的“myeclipse-9.0-offline-installer-windows.exe”。下面同样通过图片的方式详细介绍安装过程。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-01.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-02.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-03.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-04.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-05.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-06.jpg" /><br>
+
+<h3>
+    2.3.2 激活MyEclipse
+</h3>
+<p align="left">
+    前面MyEclipse已经安装完成，下面进行激活。首先进入MyEclipse的安装目录，找到下面的这个文件。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-07.jpg" /><br>
+
+<p align="left">
+    用WinRAR、好压或7-zip之类的解压软件打开上图中的这个jar文件，注意是打开，不是解压哦。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-08.jpg" /><br>
+
+<p>
+    利用前面从网盘下载解压后里面的“MyEclipse 9.0 Activation”这个文件夹里面的“publicKey.bytes”这个文件替换上图所示的同名文件。然后关闭上图的窗口，并根据提示保存刚才的修改。
+</p>
+<p>
+    接下来到MyEclipse安装目录下面，找到myeclipse.ini这个文件，并用文本编辑器打开它。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-09.jpg" /><br>
+
+<p align="left">
+    在这个文件的最后加入两行：
+</p>
+<p align="left">
+    -Dgenuitec.honorDevMode=true<br>
+    -Dosgi.dev=true
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-10.jpg" /><br>
+
+<p align="left">
+    双击下图所示的文件，启动MyEclipse。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-11.jpg" /><br>
+
+<p align="left">
+    第一次运行，会提示选择工作空间。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-12.jpg" /><br>
+
+<p>
+    进入MyEclipse后看到的界面。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-13.jpg" /><br>
+
+<p>
+    运行“MyEclipse 9.0 Activation”这个文件夹里面的“myeclipse9_keygen_activator.exe”。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-14.jpg" /><br>
+
+<p align="left">
+    通过依次点击上图的②③，就会生成类似下图所示的Subscription和Activation Code。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-15.jpg" /><br>
+<p align="left">
+    利用上图的激活码，按照下面的步骤来激活MyEclipse。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.3-16.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-17.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-18.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-19.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-20.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.3-21.jpg" /><br>
+
+<h2>
+    2.4 在MyEclipse里面关联Tomcat
+</h2>
+<p>
+    前面我们已经知道了怎么启动Tomcat，现在我们把Tomcat关联到MyEclipse，这样我们就可以在MyEclipse里面更加方便的开启和关闭Tomcat了。
+</p>
+<p>
+    在MyEclipse菜单栏点击“Window”，选择“Preferences”。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.4-01.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.4-02.jpg" /><br>
+
+<p align="left">
+    关联好了之后，检查一下是否生效了。打开MyEclipse的Servers视图。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.4-03.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.4-04.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.4-05.jpg" /><br>
+
+<p>
+    当看到类似上图的启动成功的界面之后，打开浏览器，访问“http://localhost:8080”，同样会出现我们前面看到的页面，这里就不重复演示了。到此，我们就掌握了在MyEclipse里面启动和关闭Tomcat的方法了，以后的教程将会介绍如何在MyEclipse里面部署项目到Tomcat。
+</p>
+<h2>
+    2.5 花生壳让你的PC成为服务器
+</h2>
+<p>
+    童鞋们知道微信开发模式需要有一个服务器，也就是当你的项目部署到服务器上面，大家都可以访问。但是现在我们生活中更多的是家里有一个小路由器，让所有设备通过小路由器上网。这种情况下，你虽然能访问别人的网站，但是别人是访问不到你的设备的。如何让别人可以访问到你的机子呢？只要别人可以访问到你的PC，那你的PC就可以当作微信公众平台开发的测试机子了，小道现在就是这样做的，本地测试没有问题之后，再部署到真正的服务器上面。这就是下面要介绍的通过花生壳来实现。
+</p>
+<h3>
+    2.5.1 申请花生壳帐号
+</h3>
+<p>
+    到花生壳的官网<a target="_blank" href="http://www.oray.com/">http://www.oray.com/</a>，首页上方点击“注册”。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.5-01.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.5-02.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.5-03.jpg" /><br>
+
+<p>
+    到这里，你应该已经注册成功了。花生壳的官网的内容很多，我们不用管，你只需要记住你刚才输入的“护照名”和“密码”就可以了。
+</p>
+<h3>
+    2.5.2 设置静态IP
+</h3>
+<p>
+    在命令提示符窗口里面，输入：ipconfig /all，找到你正在使用的网卡的MAC地址。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.5-04.jpg" /><br>
+
+<p align="left">
+    登录你的路由器，登录信息在路由器的背面可以看到。一般默认的登陆地址是192.168.1.1，帐号和密码都是admin。下面的图，根据不同的路由器UI会有所不同，但是只要找到功能的位置就可以了。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.5-05.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.5-06.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.5-07.jpg" /><br>
+<img src="resources/figure/weixin-course/chapter02/2.5-08.jpg" /><br>
+
+<p>
+    正常情况下，重启之后你刚才的设置就会生效，你的IP就是固定的了。
+</p>
+<h3>
+    2.5.3 设置动态DNS
+</h3>
+
+<img src="resources/figure/weixin-course/chapter02/2.5-09.jpg" /><br>
+
+<p align="left">
+    现在别人通过访问上图所示的域名就可以访问到你的路由器。如何通过路由器访问到你的PC呢？这就要设置一下DMZ了。
+</p>
+<h3>
+    2.5.4 启用DMZ
+</h3>
+
+<img src="resources/figure/weixin-course/chapter02/2.5-10.jpg" /><br>
+
+<p align="left">
+    好了，通过DMZ，现在向你的路由器发送的请求也就是发送到你的PC了。
+</p>
+<h3>
+    2.5.5 测试
+</h3>
+<p>
+    现在我们来测试一下效果。首先通过前面介绍的方法在MyEclipse里面启动Tocmat，启动成功之后，我们不仅可以通过http://localhost:8080也可以通过http://xiaodaoit.oicp.net:8080来访问Tomcat。xiaodaoit.oicp.net就是前面我们在设置动态DNS的时候得到的域名信息。
+</p>
+
+<img src="resources/figure/weixin-course/chapter02/2.5-11.jpg" /><br>
+
+<p>
+    你也可以把http://xiaodaoit.oicp.net:8080发给你的童鞋，他们通过这个地址也可以访问到你本地的Tomcat。
+</p>
+<h2>
+    2.6 虚拟主机
+</h2>
+<h3>
+    2.6.1 购买
+</h3>
+<p>
+    前面介绍的把你的PC当作服务器，这种只能在你开发的时候用来测试。不能当作正式的服务器。现在有很多服务商提供虚拟主机、VPS主机等等。为了避免广告的嫌疑，这部分小道不详细演示。小道选择服务提供商的原则就是售后技术支持响应快、服务好、价格合理，呵呵^_^，好像说的是废话哦。大家购买之前要咨询清楚，虚拟主机用途是很专的，有些只有PHP服务，有些只有JAVA服务。
+</p>
+<p>
+    上次小道跟老贼说的每年158元的那个是Linux主机，只提供PHP服务，小道用它来搭建一个小站<a target="_blank" href="http://xiaodao.co/">http://xiaodao.co</a>。而另外一个JAVA主机要贵一点，每年478元，这个就是现在小道IT公众号所使用的服务器。
+</p>
+<h3>
+    2.6.2 把代码上传到虚拟主机
+</h3>
+<p>
+    购买好了之后，会得到主机的FTP地址、用户名和密码。一般是通过FTP把代码上传到虚拟主机的，这类的FTP客户端软件很多的，比如FileZilla Client、CuteFTP等等。大家选择一个合适自己的就可以了。小道用的是CuteFTP，可以从网盘下载“CuteFTP
+    Pro.zip”，里面有文档教大家怎么安装的。
+</p>
+<p>
+    大家先把FTP的客户端软件安装好，在第03章我们将会开始写代码，到时再详细介绍如何上传代码到虚拟主机。
+</p>
+<br>
+<p align="left">
+    =========================
+<br>
+    陈小道
+<br>
+    开始于：2013年5月15日 00:10
+<br>
+    完成于：2013年5月18日 01:21
+</p>
  
 </div>
