@@ -1,0 +1,124 @@
+.article-content {
+    padding: 20px;
+    font-family: Helvetica,​Arial,​sans-serif;
+    font-size: 15px;
+    color: #555555;
+}
+
+.article-content h1, .article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6 {
+    margin-top: 1em;
+    color: #008000;
+}
+
+.article-content h1 {
+    font-size: xx-large;
+}
+
+.article-content h2 {
+    font-size: x-large;
+}
+
+.article-content h3 {
+    font-size: large;
+}
+
+.article-content p, .article-content pre {
+    margin-top: 0.8em;
+}
+
+.article-content p {
+    line-height: 1.4em;
+}
+
+/* List */
+.article-content ol, .article-content ul {
+    margin: 0.8em 0em 0.8em 1em;
+}
+
+.article-content li {
+    margin: 0.4em 0em;
+    list-style-position: inside;
+}
+
+.article-content ol li {
+    list-style-type: decimal;
+}
+
+.article-content ul li {
+    list-style-type: disc;
+}
+
+.article-content dl {
+    margin: 0px;
+}
+
+.article-content dt {
+    margin: 0.8em 0em 0.4em 1em;
+    font-weight: bold;
+}
+
+.article-content dd {
+    margin: 0.4em 0em 0.4em 2em;
+}
+
+.article-content blockquote {
+    margin-left: 2em;
+}
+
+.article-content a, .article-content a:visited, span.tab-href {
+    color: #3070A0;
+    text-decoration: none;
+}
+
+.article-content a:hover, span.tab-href:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.article-content table {
+    border-collapse: collapse;
+    empty-cells: show;
+}
+
+.article-content th, .article-content td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.article-content div.sign {
+    text-align: right;
+}
+
+.article-content img {
+    margin: 10px;
+}
+
+.icon-share-sina {
+    background-image: url(../image/icon-share-sina.gif);
+    background-repeat: no-repeat;
+}
+
+.icon-share-qq-t {
+    background-image: url(../image/icon-share-qq-t.png);
+    background-repeat: no-repeat;
+}
+
+.icon-copy-link {
+    background-image: url(../image/icon-copy-link.png);
+    background-repeat: no-repeat;
+}
+
+.icon-navigator {
+    background-image: url(../image/icon-navigator.png);
+    background-repeat: no-repeat;
+}
+
+.icon-nav-expand {
+    background-image: url(../image/icon-tree-expand.png);
+    background-repeat: no-repeat;
+}
+
+.icon-nav-collapse {
+    background-image: url(../image/icon-tree-collapse.png);
+    background-repeat: no-repeat;
+}
