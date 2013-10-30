@@ -101,7 +101,7 @@ Ext.define('iKnowledge.view.Article', {
             appkey: '',
             title: '《' + this.title + '》',
             pic: picture,
-            ralateUid: '3209972840',
+            ralateUid: '3720736655',
 	        language: 'zh_cn'
         };
         var query = Ext.Object.toQueryString(param);
