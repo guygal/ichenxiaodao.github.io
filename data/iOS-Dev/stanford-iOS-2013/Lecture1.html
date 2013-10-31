@@ -1,0 +1,41 @@
+<div title="1. Class Logistics, Overview of iOS, MVC, Objective-C" class="article-content">
+  <div class="sign">2013年11月01日</div>
+<h1>
+    1. Class Logistics, Overview of iOS, MVC, Objective-C
+</h1>
+
+<h2>类的扩展</h2></br>
+<img src="/resources/figure/stanford-iOS-2013/lecture1/private-declarations.png" alt="private-declarations" /></br>
+这里他没有详细讲解，其实这是属于“类的扩展”，又称为“未命名分类”。</br>
+未命名分类是非常有用的，因为它们的方法都是私有的。如果需要写一个类，而且数据和方法仅供这个类本身使用，未命名分类比较合适。</br></br>
+参考：《Objective-C 程序设计（第4版）》第11章 分类和协议</br>
+
+<h2>strong和weak的形象理解</h2></br>
+类似对象这种存储在堆中的变量才有strong和weak的概念，而int、BOOL这种基本数据类型，就没有这个概念。</br></br>
+
+strong和weak不同的是当一个对象不再有strong类型的指针指向它的时候它会被释放，即使还有weak型指针指向它。</br>
+一旦最后一个strong型指针离去，这个对象将被释放，所有剩余的weak型指针都将被清除。</br></br>
+举例：</br>
+想象我们的对象是一条狗，狗想要跑掉（被释放）。</br>
+strong型指针就像是栓住的狗。只要你用牵绳挂住狗，狗就不会跑掉。如果有5个人牵着一条狗（5个strong型指针指向1个对象），除非5个牵绳都脱落 ，否着狗是不会跑掉的。</br>
+weak型指针就像是一个小孩指着狗喊到：“看！一只狗在那” 只要狗一直被栓着，小孩就能看到狗，（weak指针）会一直指向它。只要狗的牵绳脱落，狗就会跑掉，不管有多少小孩在看着它。
+</br>
+只要最后一个strong型指针不再指向对象，那么对象就会被释放，同时所有的weak型指针都将会被清除。 </br></br>
+
+参考：<a target="_blank" href="http://dcm19872007.blog.163.com/blog/static/8651937420131279318189/">http://dcm19872007.blog.163.com/blog/static/8651937420131279318189/</a>
+
+<h2>nonatomic</h2></br>
+它要与@synthesize一起使用才有意义。</br>
+atomic的意思就是setter/getter这个函数是一个原语操作。如果有多个线程同时调用setter的话，不会出现某一个线程执行setter全部语句之前，另一个线程开始执行setter情况，相当于函数头尾加了锁一样。</br>
+nonatomic不保证setter/getter的原语行，所以你可能会取到不完整的东西。</br></br>
+
+比如setter函数里面改变两个成员变量，如果你用nonatomic的话，getter可能会取到只更改了其中一个变量时候的状态，这样取到的东西会有问题。</br>
+如果不需要多线程支持的话，当然nonatomic就够用了，另外由于不涉及锁操作，所以它执行相对快点。</br></br>
+
+参考：<a target="_blank" href="http://wsqwsq000.iteye.com/blog/1121137">http://wsqwsq000.iteye.com/blog/1121137 </a>
+
+<h2>修改BOOL类型的getter方法名</h2></br>
+<img src="/resources/figure/stanford-iOS-2013/lecture1/BOOL-getter.png" alt="BOOL-getter" />
+
+
+</div>

@@ -15,6 +15,7 @@ find data -type d | while read d; do
                 -e 's/iOS-Dev/iOS开发/g' \
                 -e 's/software-engineering/软件工程/g' \
                 -e 's/version-control/版本控制/g'  \
+                -e 's/stanford-iOS-2013/斯坦福大学的iOS开发课程笔记（2013）/g'  \
                 -e 's/practical/实用备忘/g' <<< "$p")
         echo "<dt>${p}</dt>"
 

@@ -118,6 +118,7 @@ var i18n_zh_CN = {
     'iOS-Dev': 'iOS开发',
     'software-engineering': '软件工程',
     'version-control': '版本控制',
+    'stanford-iOS-2013': '斯坦福大学的iOS开发课程笔记（2013）',
     'practical': '实用备忘'
     };
 
