@@ -114,29 +114,12 @@ var getFileTitle = function(file) {
 };
 
 var i18n_zh_CN = {
-    'weixin-course': '微信公众平台开发教程',
-    'software': '软件人生',
-    'cpp': 'C语言',
-    'experiment': '上机实验报告',
-    'programming': '程序设计方法',
-    'algorithm': '算法',
-    'hdu': '杭电100题',
-    'kill-if': '消灭成堆的分支语句',
-    'code': '代码分享',
-    'icalc': '中文计算器',
-    'FriendSell': '好友买卖外挂',
-    'basic': 'BASIC解释器',
-    'script': '脚本小子',
-    'thinking': '思考与感悟',
-    'tool-tips': '物尽其（奇）用',
-    'rack-my-brain': '拍拍脑袋',
-    'reading-room': '阅读室',
-    'learning': '学习方法',
-    'happy-life': '幸福生活',
-    'treasure': '我的宝贝们',
-    '2b': '二逼青年欢乐多',
-    'happy-new-year': '新年快乐'
-};
+    'weixin-course': '微信公众平台',
+    'iOS-Dev': 'iOS开发',
+    'software-engineering': '软件工程',
+    'version-control': '版本控制',
+    'practical': '实用备忘'
+    };
 
 var go_folder = function(folder) {
     var id = folder.getName();

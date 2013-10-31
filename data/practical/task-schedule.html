@@ -1,0 +1,31 @@
+<div title="设置定时任务" class="article-content">
+  <div class="sign">2013年10月31日</div>
+<h1>
+    设置定时任务
+</h1>
+
+<h2>Windows</h2>
+（以Windows 7 为例）</br>
+ 
+Control Panel -> System and Security -> Schedule tasks -> Create New Task ...</br></br>
+ 
+关键点：</br>
+1、Triggers里面设置定时执行的周期；</br>
+2、Actions里面设置要执行的程序或脚本；</br>
+
+
+<h2>Mac OS</h2>
+
+两个命令：</br>
+1、crontab -l 查看当前设置的定时任务；</br>
+2、crontab -e 编辑当前设置的定时任务。</br></br>
+
+举例定时任务格式：</br>
+0,30 9-22 * * 1-5 /User/cdz/task.sh</br>
+表示每周一到周五的9点到22点每隔半个小时执行脚本task.sh.</br></br>
+
+更多细节请参考：
+<a target="_blank" href="http://blog.csdn.net/tianlesoftware/article/details/5315039">http://blog.csdn.net/tianlesoftware/article/details/5315039</a>
+
+</br>
+</div>

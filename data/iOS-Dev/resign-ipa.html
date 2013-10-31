@@ -1,0 +1,97 @@
+<div title="重新签名（Re-sign）IPA" class="article-content">
+  <div class="sign">2013年10月31日</div>
+<h1 align="center">
+    重新签名（Re-sign）IPA
+</h1>
+<h2>
+    预备
+</h2>
+<p>
+了解Certificates、Identifiers、Devices和Provisioning Profiles之间的相互联系。
+</p>
+
+<h2>
+    需求
+</h2>
+<p>
+1、在开发中，有时候版本迭代相当的快，比如每半个小时通过脚本自动做一个IPA，当有一台新设备要安装昨天某个时候的IPA时，就需要用新的Certificate和Provisioning Profile来重新签名；</br>
+2、一个$99的开发帐号，最多可以注册100台设备，也就是你的App在上架之前，最多只有100台设备可以安装，如果用多个开发帐号re-sign的话，就没有这个限制了。
+</p>
+
+<h2>
+    准备
+</h2>
+<p>
+1、Certificate文件（后缀.p12）；</br>
+2、Provisioning Profile文件（后缀.mobileprovision）；</br>
+3、Xcode需要安装“Command Line Tools”。</br>
+</p>
+
+<h2>
+    实践
+</h2>
+<p>
+1、双击.p12文件，确保将其加入到钥匙串（Keychain Access）；</br>
+2、获取钥匙串中证书的名称；</br>
+3、编写如下的脚本</br>
+
+<table border="1" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <td valign="top">
+#!/bin/sh</br></br>
+
+#获取第一个参数，也就是要用于重新签名的IPA名称，带后缀.ipa</br>
+OLD_IPA=$1</br>
+#获取第二个参数，也就是重新签名之后的IPA名称，不带后缀</br>
+NEW_IPA=$2</br></br>
+
+#所用的Provisioning Profile文件</br>
+RESIGN_PROVISION="cdz_dev.mobileprovision"</br>
+#所用的证书名称</br>
+RESIGN_CERT="iPhone Developer: DAOZHENG CHEN (PAFZRFHS4R)"</br>
+#你的IPA解压之后，在Payload文件里面的那个文件夹名称后缀是.app</br>
+APPNAME="fivechess"</br>
+#解压IPA，并记录log</br>
+unzip $OLD_IPA > resign.log</br>
+#删除原来的签名和mobileprovision文件</br>
+rm -r "Payload/$APPNAME.app/_CodeSignature"</br>
+rm -r "Payload/$APPNAME.app/embedded.mobileprovision"</br></br>
+
+#拷贝新的profile文件</br>
+cp "$RESIGN_PROVISION" "Payload/$APPNAME.app/embedded.mobileprovision"</br></br>
+
+#重新签名</br>
+/usr/bin/codesign -f -s "$RESIGN_CERT" --resource-rules "Payload/$APPNAME.app/ResourceRules.plist" "Payload/$APPNAME.app"</br></br>
+
+echo "$RESIGN_CERT"</br></br>
+
+#压缩IPA</br>
+zip -qr "$NEW_IPA.ipa" Payload</br></br>
+
+rm -r "Payload"</br>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+4、在Mac OS下，运行上面的脚本。</br>
+运行格式：./脚本名称&nbsp&nbsp&nbsp待重新签名的IPA名称(带后缀)&nbsp&nbsp&nbsp重新签名之后的IPA名称(不带后缀)</br>
+</p>
+
+<h2>
+    总结
+</h2>
+<p>
+1、如果碰到脚本没有可执行权限的话，用chmod&nbsp&nbsp&nbsp777&nbsp&nbsp&nbsp脚本名；</br>
+2、如果碰到权限问题的话，在运行格式前面加sudo。</br>
+</p>
+
+<h2>
+    参考
+</h2>
+<a target="_blank" href="http://stackoverflow.com/questions/5160863/how-to-re-sign-the-ipa-file">http://stackoverflow.com/questions/5160863/how-to-re-sign-the-ipa-file</a>
+
+
+</div>

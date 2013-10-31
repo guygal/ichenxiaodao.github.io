@@ -1,0 +1,24 @@
+<div title="Perforce常用命令行" class="article-content">
+  <div class="sign">2013年10月31日</div>
+<h1>
+    Perforce常用命令行
+</h1>
+</br></br>
+p4 set P4PORT=xiaodao.co:8888</br>
+P4 set P4CLIENT=xiaodao-wks</br>
+P4 set PASSWD=Abcd1234</br>
+p4 set USER=xiaodao</br>
+
+<h2>sync</h2>
+p4 -u %USER% -P %PASSWD% -c %P4CLIENT% -p %P4PORT% sync //projects/...</br>
+
+<h2>edit</h2>
+P4 -u %USER% -P %PASSWD% -c  %P4CLIENT% -p %P4PORT% edit //projects/file.txt</br>
+
+<h2>submit</h2>
+p4 submit -d "描述" //projects/file.txt</br>
+
+<h2>获取文件的版本号</h2>
+p4 -u %USER% -c %P4CLIENT% -p %P4PORT% files -q //projects/folder/... > D:\get_file_rev.txt</br>
+
+</div>

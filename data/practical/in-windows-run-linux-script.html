@@ -1,0 +1,16 @@
+<div title="在Windows下执行Linux或Mac的脚本" class="article-content">
+  <div class="sign">2013年10月31日</div>
+<h1>
+    在Windows下执行Linux或Mac的脚本
+</h1>
+</br></br>
+两个工具介绍：</br>
+1、pscp.exe 从Windows拷贝文件到Linux;</br>
+2、plink.exe在Windows里面执行Linux的某个脚本。</br></br>
+
+
+格式 ：</br>
+pscp -r -C -l [login_user] -pw [login_pwd] [src_folder] [login_user]@[linux_addr]:[dest_folder]</br></br>
+pscp -r -C -l cdz -pw Abcd1234 D:\folder cdz@192.168.1.188:/opt/folder</br></br>
+plink -C -i cdz.private.ppk cdz@10.225.56.26 -pw Abcd1234 "/opt/script.sh"</br>
+</div>

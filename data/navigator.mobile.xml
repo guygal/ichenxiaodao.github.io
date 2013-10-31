@@ -1,7 +1,15 @@
 <dl class="navigator">
 <dt>/</dt>
 <dd><a href="mobile.html?p=data/about.html" target="_blank">关于我</a></dd>
-<dt>/微信公众平台开发教程</dt>
+<dt>/iOS开发</dt>
+<dd><a href="mobile.html?p=data/iOS-Dev/ios-supported-device-list-guesstimate.html" target="_blank">iOS supported device list guesstimate</a></dd>
+<dd><a href="mobile.html?p=data/iOS-Dev/resign-ipa.html" target="_blank">重新签名（Re-sign）IPA</a></dd>
+<dt>/实用备忘</dt>
+<dd><a href="mobile.html?p=data/practical/in-windows-run-linux-script.html" target="_blank">在Windows下执行Linux或Mac的脚本</a></dd>
+<dd><a href="mobile.html?p=data/practical/task-schedule.html" target="_blank">设置定时任务</a></dd>
+<dt>/软件工程/版本控制</dt>
+<dd><a href="mobile.html?p=data/software-engineering/version-control/perforce-command-line.html" target="_blank">Perforce常用命令行</a></dd>
+<dt>/微信公众平台</dt>
 <dd><a href="mobile.html?p=data/weixin-course/chapter01.html" target="_blank">第01章.ZTalk@青龙老贼</a></dd>
 <dd><a href="mobile.html?p=data/weixin-course/chapter02.html" target="_blank">第02章.开发环境的搭建</a></dd>
 </dl>

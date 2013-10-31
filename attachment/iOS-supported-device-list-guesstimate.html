@@ -1,0 +1,350 @@
+<script>
+    function OSVersionToNumber(version)
+    {
+        idx = version.indexOf(".")
+        if (idx < 0)
+            throw("invalid version number "+version);
+        
+        major = parseInt(version.substring(0, idx));
+        major *= 1000*1000;
+        
+        version = version.substring(idx+1, version.length);
+        idx = version.indexOf(".")
+        if (idx < 0)
+        {
+            minor = parseInt(version);
+            rev = 0;
+        }
+        else
+        {
+            minor = parseInt(version.substring(0, idx));
+            rev = parseInt(version.substring(idx+1, version.length));
+        }
+        minor *= 1000
+        return major+minor+rev
+    }
+    // from http://developer.apple.com/library/ios///documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/B_DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html
+    // RemovedDeviceCompatibilityMatrixinfavorofoverlapping material in the new iOS Device Compatibility Reference.
+    var compatMatrix = {
+        "iPod"                    :[1, 1, 1, 1, 1, 1,        0, 0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0,        0, 0, 0, 0, 0, 0,    0, 0, 0, 0],
+        "iPhone"                :[0, 0, 0, 0, 0, 0,        1, 1, 1, 1, 1, 1, 1, 1, 1,    0, 0, 0, 0,        0, 0, 0, 0, 0, 0,    0, 0, 0, 0],
+        "iPad"                    :[0, 0, 0, 0, 0, 0,        0, 0, 0, 0, 0, 0, 0, 0, 0,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        
+        "accelerometer"         :[1, 1, 1, 1, 1, 1,        1, 1, 1, 1, 1, 1, 1, 1, 1,     1, 1, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "armv6"                 :[1, 1, 1, 1, 1, 1,        1, 1, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "armv7"                    :[0, 0, 1, 1, 1, 1,        0, 0, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "auto-focus-camera"        :[0, 0, 0, 0, 1, 0,        0, 0, 1, 1, 1, 1, 1, 1, 1,    0, 0, 0, 0,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "bluetooth-le"            :[0, 0, 0, 0, 1, 1,        0, 0, 0, 0, 0, 1, 1, 1, 1,    0, 0, 0, 0,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "camera-flash"            :[0, 0, 0, 0, 1, 0,        0, 0, 0, 0, 1, 1, 1, 1, 1,    0, 0, 0, 0,        0, 0, 0, 0, 0, 0,    0, 0, 0, 0],
+        "front-facing-camera"    :[0, 0, 0, 1, 1, 1,        0, 0, 0, 0, 1, 1, 1, 1, 1,    0, 0, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "gamekit"                :[0, 1, 1, 1, 1, 1,        0, 0, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "gps"                    :[0, 0, 0, 0, 0, 0,        0, 1, 1, 1, 1, 1, 1, 1, 1,    0, 1, 0, 1,        0, 1, 0, 1, 0, 1,    0, 1, 0, 1],
+        "gyroscope"                :[0, 0, 0, 1, 1, 1,        0, 0, 0, 0, 1, 1, 1, 1, 1,    0, 0, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "location-services"        :[1, 1, 1, 1, 1, 1,        1, 1, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "magnetometer"            :[0, 0, 0, 0, 0, 0,        0, 0, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "microphone"            :[0, 1, 1, 1, 1, 1,        1, 1, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "opengles-1"            :[1, 1, 1, 1, 1, 1,        1, 1, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "opengles-2"            :[0, 0, 1, 1, 1, 1,        0, 0, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "peer-peer"                :[0, 1, 1, 1, 1, 1,        0, 1, 1, 1, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,     1, 1, 1, 1],
+        "sms"                    :[0, 0, 0, 0, 0, 0,        1, 1, 1, 1, 1, 1, 1, 1, 1,    0, 0, 0, 0,        0, 0, 0, 0, 0, 0,    0, 0, 0, 0],
+        "still-camera"            :[0, 0, 0, 1, 1, 0,        1, 1, 1, 1, 1, 1, 1, 1, 1,    0, 0, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "telephony"                :[0, 0, 0, 0, 0, 0,        1, 1, 1, 1, 1, 1, 1, 1, 1,    0, 0, 0, 0,        0, 0, 0, 0, 0, 0,    0, 0, 0, 0],
+        "video-camera"            :[0, 0, 0, 1, 1, 0,        0, 0, 1, 1, 1, 1, 1, 1, 1,    0, 0, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        "wifi"                    :[1, 1, 1, 1, 1, 1,        1, 1, 1, 0, 1, 1, 1, 1, 1,    1, 1, 1, 1,        1, 1, 1, 1, 1, 1,    1, 1, 1, 1],
+        };
+    var devices = [
+        // ipod
+        "iPod touch",                            // iPod1,1
+        "iPod touch (2G)",                        // iPod2,1
+        "iPod touch (3G)",                        // iPod3,1
+        "iPod touch (4G)",                        // iPod4,1
+        "iPod touch (5G)",                        // iPod5,1
+        "iPod touch (5G) 16GB (no rear cam)",                        // iPod5,1
+        //iPhone
+        "iPhone",                                // iphone1,1
+        "iPhone 3G",                            // iphone1,2 (normal &china)
+        "iPhone 3GS",                            // iphone2,1
+        "iPhone 3GS (China)",                    // iphone2,1
+        "iPhone 4",                                // iphone3,1    iphone3,2(reva) iphone3,3(cdma/vz/sprint)
+        "iPhone 4S",                            // iphone4,1
+        "iPhone 5",                                // iphone5,1 iphone5,2(cdma/lte, sprint/vz/kddi)
+        "iPhone 5c",                            // ???
+        "iPhone 5s",                            // ???
+    
+        //iPad 1 & 2
+        "iPad Wi-Fi",                            // iPad1,1
+        "iPad Wi-Fi + 3G",                        // iPad1,1
+        "iPad 2 Wi-Fi",                            // ipad2,1 ipad2,4
+        "iPad 2 Wi-Fi + 3G",                    // ipad2,2(gsm) ipad2,3(cdma)
+    
+        //ipad 3, 4
+        "iPad Wi-Fi (3rd gen)",                    // ipad3,1 
+        "iPad Wi-Fi + 3G (3rd gen)",        // ipad3,2(vz) ipad3,3(at&t)
+        "iPad Wi-Fi (4th gen)",                    // ipad3,4
+        "iPad Wi-Fi + 3G (4th gen)",        // ipad3,5(at&t) ipad3,6(vz&sprint)
+        "iPad 5 (air) Wi-Fi",                    // ???
+        "iPad 5 (air) Wi-Fi + 3G",        // ???
+        
+        // ipad mini 
+        "iPad mini Wi-Fi",                        // ipad2,5
+        "iPad mini Wi-Fi + 3G",            // ipad2,6(at&t) ipad2,7(vz&sprint)
+        "iPad mini 2 (retina) Wi-Fi",                        // ipad2,5
+        "iPad mini 2 (retina) Wi-Fi + 3G",            // ipad2,6(at&t) ipad2,7(vz&sprint)
+        ];
+        
+    var family = {
+            "iPod 5":["iPod touch (5G)","iPod touch (5G) 16GB (no rear cam)"],
+            "iPhone 3GS":["iPhone 3GS","iPhone 3GS (China)"],
+            "iPad 1" : ["iPad Wi-Fi","iPad Wi-Fi + 3G"],
+            "iPad 2" : ["iPad 2 Wi-Fi","iPad 2 Wi-Fi + 3G"],
+            "iPad 3" : ["iPad Wi-Fi (3rd gen)","iPad Wi-Fi + 3G (3rd gen)"],
+            "iPad 4" : ["iPad Wi-Fi (4th gen)","iPad Wi-Fi + 3G (4th gen)"],
+            "iPad 5(air)" : ["iPad 5 (air) Wi-Fi","iPad 5 (air) Wi-Fi + 3G"],
+            "iPad Mini" : ["iPad mini Wi-Fi","iPad mini Wi-Fi + 3G"],
+            "iPad Mini 2 (retina)" : ["iPad mini 2 (retina) Wi-Fi","iPad mini 2 (retina) Wi-Fi + 3G"]
+            };
+    // from http://ios.e-lite.org
+    var maxos = [
+        OSVersionToNumber("3.1.3"), //"iPod touch",
+        OSVersionToNumber("3.1.3"), //"iPod touch (2G)",
+        OSVersionToNumber("5.1.1"), //"iPod touch (3G)",
+        OSVersionToNumber("6.1.3"), //"iPod touch (4G)",
+        OSVersionToNumber("8.0"), //"iPod touch (5G)",
+        OSVersionToNumber("8.0"), //"iPod touch (5G) 16GB (no rear cam)"
+    
+        OSVersionToNumber("3.1.3"), //"iPhone",                                // iphone1,1
+        OSVersionToNumber("4.2"), //"iPhone 3G",                            // iphone1,2 (normal &china)
+        OSVersionToNumber("6.1.3"), //"iPhone 3GS",                            // iphone2,1
+        OSVersionToNumber("6.1.3"), //"iPhone 3GS (China)",                    // iphone2,1
+        OSVersionToNumber("8.0"), //"iPhone 4",                                // iphone3,1    iphone3,2(reva) iphone3,3(cdma/vz/sprint)
+        OSVersionToNumber("8.0"), //"iPhone 4S",                            // iphone4,1
+        OSVersionToNumber("8.0"), //"iPhone 5",                                // iphone5,1 iphone5,2(cdma/lte, sprint/vz/kddi)
+        OSVersionToNumber("8.0"), //"iPhone 5c",
+        OSVersionToNumber("8.0"), //"iPhone 5s",
+    
+        OSVersionToNumber("5.1.1"), //"iPad Wi-Fi",
+        OSVersionToNumber("5.1.1"), //"iPad Wi-Fi + 3G",
+        OSVersionToNumber("8.0"), //"iPad 2 Wi-Fi",                            // ipad2,1 ipad2,4
+        OSVersionToNumber("8.0"), //"iPad 2 Wi-Fi + 3G",                    // ipad2,2(gsm) ipad2,3(cdma)
+    
+        OSVersionToNumber("8.0"), //"iPad Wi-Fi (3rd gen)",                    // ipad3,1 
+        OSVersionToNumber("8.0"), //"iPad Wi-Fi + Cellular (3rd gen)",        // ipad3,2(vz) ipad3,3(at&t)
+        OSVersionToNumber("8.0"), //"iPad Wi-Fi (4th gen)",                    // ipad3,4
+        OSVersionToNumber("8.0"), //"iPad Wi-Fi + Cellular (4th gen)",        // ipad3,5(at&t) ipad3,6(vz&sprint)
+        OSVersionToNumber("8.0"), //"iPad 5 (air) Wi-Fi",                    // ipad3,4
+        OSVersionToNumber("8.0"), //"iPad 5 (air) Wi-Fi + Cellular",        // ipad3,5(at&t) ipad3,6(vz&sprint)
+        
+        OSVersionToNumber("8.0"), //"iPad mini Wi-Fi",                        // ipad2,5
+        OSVersionToNumber("8.0"), //"iPad mini Wi-Fi + Cellular",            // ipad2,6(at&t) ipad2,7(vz&sprint)
+        OSVersionToNumber("8.0"), //"iPad mini 2 (retina) Wi-Fi",                        // ipad2,5
+        OSVersionToNumber("8.0"), //"iPad mini 2 (retina) Wi-Fi + Cellular",            // ipad2,6(at&t) ipad2,7(vz&sprint)
+    ];
+        
+    function getDeviceList()
+    {
+        require = []
+        avoid = []
+        
+        // check requirement
+        for (attr in compatMatrix)
+        {
+            str = attr
+            e = document.getElementById(attr)
+            value = e.value;
+            if (value == 'true')
+                require[attr] = true;
+            else if (value == 'false')
+                avoid[attr] = true;
+        }
+        
+        // if not universal build, add device family restriction
+        value = document.getElementById("type").value;
+        if (value == 'iPhone')
+        {
+            avoid["iPad"] = true;
+        }
+        else if (value == 'iPad')
+        {
+            avoid["iPhone"] = true;
+            avoid["iPod"] = true;
+        }
+        
+        // add all devices in list of possible
+        possible = devices.slice(0);
+        
+        //chech the list against the device requirements
+        for (a in avoid)
+        {
+            var matrix = compatMatrix[a]
+            for (i=0; i<devices.length; i++)
+            {
+                if (matrix[i] != 0)
+                {
+                    //possible.discard(devices[i])
+                    delete possible[i];
+                }
+            }
+        }
+        for (a in require)
+        {
+            var matrix = compatMatrix[a]
+            for (i=0; i<devices.length; i++)
+            {
+                if (matrix[i] != 1)
+                    delete possible[i];
+            }
+        }
+        
+        //console.log(possible)
+    
+        // get min OS
+        minOS = parseInt(document.getElementById("os").value);
+    
+        for (a in devices)
+        {
+            var idx = possible.indexOf(devices[a])
+            if (idx >= 0)
+            {
+                if (minOS > maxos[a])
+                    delete possible[idx];
+            }
+        }
+        
+        // get family
+        for (key in family)
+        {
+            value = family[key]
+            ok = true;
+            for (var d=0; d<value.length; d++)
+            {
+                if (possible.indexOf(value[d]) < 0)
+                {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok)
+            {
+                for (var d=0; d<value.length; d++)
+                    delete possible[possible.indexOf(value[d])];
+                possible.push(key);
+            }
+        }
+        
+        // sort
+        possible.sort(function (a, b) {
+                return a.localeCompare(b);
+            }
+            );
+        
+        //document.write(possible)
+        str =  ""
+        for (a in possible)
+            str += possible[a] + "<br/>"
+        //document.write(str)
+        document.getElementById("result").innerHTML = str;
+    }
+    
+</script>
+<form>
+    <table>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <b>build type</b> 
+                            <br/>
+                            <span style="font-size:small">(as specified in Info.plist with <b>UIDeviceFamily</b>)</span>
+                        </td>
+                        <td>
+                            <select id="type" onchange='getDeviceList();')>
+                                <option selected="selected" value="universal">universal</option>
+                                <option value="iPhone">iPhone</option>
+                                <option value="iPad">iPad</option>
+                            </select>
+                        <td>
+                    </tr>
+                    <tr> 
+                        <td>
+                            <b>min OS</b> 
+                            <br/>
+                            <span style="font-size:small">(as specified in Info.plist with <b>MinimumOSVersion</b>)</span>
+                        </td>
+                        <td>
+                            <select id="os" onchange='getDeviceList();'>
+                                <option value="4003000">4.3</option>
+                                <option value="4003001">4.3.1</option>
+                                <option value="4003002">4.3.2</option>
+                                <option value="4003003">4.3.3</option>
+                                <option value="4003004">4.3.4</option>
+                                <option value="4003005">4.3.5</option>
+                                <option value="5000000">5.0</option>
+                                <option value="5000001">5.0.1</option>
+                                <option value="5001000">5.1</option>
+                                <option value="5001001" >5.1.1</option>
+                                <option value="6000000" selected="selected">6.0</option>
+                                <option value="6000001">6.0.1</option>
+                                <option value="6001000">6.1</option>
+                                <option value="6001002">6.1.2</option>
+                                <option value="6001003">6.1.3</option>
+                                <option value="7000000">7.0</option>
+                                <option value="7000001">7.0.1</option>
+                                <option value="7000002">7.0.2</option>
+                                <option value="7000003">7.0.3</option>
+                            </select>
+                        </td>
+                    </tr>
+            
+                    <tr>
+                        <td colspan="2" style="min-height:2em;">
+                        </td>
+                    </tr>
+            
+                    <tr>
+                        <td coldspan="2">
+                            <b>device requirements</b> 
+                            <br/>
+                            <span style="font-size:small">(as specified in Info.plist with <b>UIRequiredDeviceCapabilities</b>)</span>
+                        </td>
+                    </tr>
+            
+                    <script>
+                        for (attr in compatMatrix)
+                        {
+                            if ((attr=='iPod') || (attr=='iPhone') || (attr=='iPad'))
+                            {
+                                document.write("<input style='display:none;' id='"+attr+"' value=''>")
+                                continue;
+                            }
+                            document.write("<tr>");
+                                document.write("<td>");
+                                    document.write(attr);
+                                document.write("</td>");
+                                document.write("<td>");
+                                    document.write("<select id='"+attr+"'  onchange='getDeviceList();' >")
+                                        document.write("<option selected='selected' value=''>unspecified</option>")
+                                        document.write("<option value='true'>true</option>")
+                                        document.write("<option value='false'>false</option>")
+                                    document.write("</select>")
+                                    document.write("<br/>")
+                                document.write("</td>")
+                            document.write("</tr>")
+                        }
+                    </script>
+                </table>
+            </td>
+        
+            <td style="min-width:2em;">
+            </td>
+        
+            <td>
+                <b>based on your settings, your build will be available on :</b><br/>
+                <p id='result' style="margin:2em;"></span>
+            </td>
+        </tr>
+    </table>
+</form>
+<script>
+    getDeviceList();
+</script>
