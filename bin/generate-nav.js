@@ -119,7 +119,7 @@ var i18n_zh_CN = {
     'software-engineering': '软件工程',
     'version-control': '版本控制',
     'life-is-like-a-play': '人生如戏',
-    'stanford-iOS-2013': '斯坦福大学的iOS开发课程笔记（2013）',
+    'stanford-iOS-2013': '斯坦福大学的iOS开发课程笔记(2013)',
     'practical': '实用备忘'
     };
 
