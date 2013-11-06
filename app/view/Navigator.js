@@ -26,6 +26,12 @@ Ext.define('iKnowledge.view.Navigator', {
             handler: function() {
                 me.collapseAll(Ext.emptyFn);
             }
+         }, '->', {
+            xtype: 'textfield',
+            emptyText: '站内搜索',
+            listeners: {
+                specialkey: me.doSearch
+            }
         }];
         me.callParent(arguments);
     },
@@ -33,4 +39,12 @@ Ext.define('iKnowledge.view.Navigator', {
     initComponent: function() {
         this.callParent(arguments);
     },
+    
+    doSearch: function(me, event, options) {
+        if (event.keyCode == 13) {
+            var google = 'http://www.google.com/cse/publicurl?cx=017980255496695582255:sl7zsnfe4qg&q=';
+            var url = google + encodeURIComponent(event.currentTarget.value);
+            open(url, 'ichenxiaodao-search');
+        }
+    }
 });
