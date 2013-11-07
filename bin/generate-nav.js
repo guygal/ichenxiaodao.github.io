@@ -116,7 +116,7 @@ var getFileTitle = function(file) {
 var i18n_zh_CN = {
     'weixin-course': '微信公众平台',
     'iOS-Dev': 'iOS开发',
-    'software-engineering': '软件工程',
+    'software-lift': '软件人生',
     'version-control': '版本控制',
     'life-is-like-a-play': '人生如戏',
     'stanford-iOS-2013': '斯坦福大学的iOS开发课程笔记(2013)',

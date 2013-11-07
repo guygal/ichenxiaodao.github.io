@@ -13,7 +13,7 @@ find data -type d | while read d; do
         fi
         p=$(sed -e 's/weixin-course/微信公众平台/g' \
                 -e 's/iOS-Dev/iOS开发/g' \
-                -e 's/software-engineering/软件工程/g' \
+                -e 's/software-lift/软件人生/g' \
                 -e 's/version-control/版本控制/g'  \
                 -e 's/life-is-like-a-play/人生如戏/g'  \
                 -e 's/stanford-iOS-2013/斯坦福大学的iOS开发课程笔记(2013)/g'  \
