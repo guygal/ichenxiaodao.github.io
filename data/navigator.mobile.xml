@@ -1,6 +1,7 @@
 <dl class="navigator">
 <dt>/</dt>
-<dd><a href="mobile.html?p=data/about.html" target="_blank">关于</a></dd>
+<dd><a href="mobile.html?p=data/about.html" target="_blank">关于我</a></dd>
+<dd><a href="mobile.html?p=data/archive-directory.html" target="_blank">归档目录</a></dd>
 <dt>/iOS学习记录</dt>
 <dd><a href="mobile.html?p=data/iOS-Dev/app-name-expiry.html" target="_blank">App Name Expiry</a></dd>
 <dd><a href="mobile.html?p=data/iOS-Dev/ios-supported-device-list-guesstimate.html" target="_blank">iOS supported device list guesstimate</a></dd>
