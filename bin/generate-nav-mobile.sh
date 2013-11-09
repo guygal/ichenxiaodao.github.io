@@ -11,8 +11,8 @@ find data -type d | while read d; do
         if [ -z $p ]; then
             p=/
         fi
-        p=$(sed -e 's/weixin-course/微信公众平台/g' \
-                -e 's/iOS-Dev/iOS开发/g' \
+        p=$(sed -e 's/weixin-course/微信公众平台开发/g' \
+                -e 's/iOS-Dev/iOS学习记录/g' \
                 -e 's/software-lift/软件人生/g' \
                 -e 's/version-control/版本控制/g'  \
                 -e 's/life-is-like-a-play/人生如戏/g'  \

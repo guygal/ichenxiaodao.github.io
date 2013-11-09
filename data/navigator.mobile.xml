@@ -1,15 +1,15 @@
 <dl class="navigator">
 <dt>/</dt>
-<dd><a href="mobile.html?p=data/about.html" target="_blank">关于我</a></dd>
-<dt>/iOS开发</dt>
+<dd><a href="mobile.html?p=data/about.html" target="_blank">关于</a></dd>
+<dt>/iOS学习记录</dt>
 <dd><a href="mobile.html?p=data/iOS-Dev/app-name-expiry.html" target="_blank">App Name Expiry</a></dd>
 <dd><a href="mobile.html?p=data/iOS-Dev/ios-supported-device-list-guesstimate.html" target="_blank">iOS supported device list guesstimate</a></dd>
 <dd><a href="mobile.html?p=data/iOS-Dev/let-you-love-iphone-dev.html" target="_blank">让不懂编程的人爱上iPhone开发(学习总结)</a></dd>
 <dd><a href="mobile.html?p=data/iOS-Dev/resign-ipa.html" target="_blank">重新签名(Re-sign)IPA</a></dd>
 <dd><a href="mobile.html?p=data/iOS-Dev/the-first-iOS-game.html" target="_blank">写在第一款游戏上架之后</a></dd>
-<dt>/iOS开发/斯坦福大学的iOS开发课程笔记(2013)</dt>
+<dt>/iOS学习记录/斯坦福大学的iOS开发课程笔记(2013)</dt>
 <dd><a href="mobile.html?p=data/iOS-Dev/stanford-iOS-2013/Lecture1.html" target="_blank">Lecture 1 笔记与总结</a></dd>
-<dd><a href="mobile.html?p=data/iOS-Dev/stanford-iOS-2013/Lecture2&3.html" target="_blank">Lecture 2&3 笔记与总结</a></dd>
+<dd><a href="mobile.html?p=data/iOS-Dev/stanford-iOS-2013/Lecture2-3.html" target="_blank">Lecture 2&3 笔记与总结</a></dd>
 <dt>/人生如戏</dt>
 <dd><a href="mobile.html?p=data/life-is-like-a-play/life-is-an-experience.html" target="_blank">人生就是一场经历</a></dd>
 <dt>/实用备忘</dt>
@@ -19,7 +19,7 @@
 <dd><a href="mobile.html?p=data/software-lift/zero-based-how-to-learn -iOS.html" target="_blank">零基础的人该如何学习iOS编程?</a></dd>
 <dt>/软件人生/版本控制</dt>
 <dd><a href="mobile.html?p=data/software-lift/version-control/perforce-command-line.html" target="_blank">Perforce常用命令行</a></dd>
-<dt>/微信公众平台</dt>
+<dt>/微信公众平台开发</dt>
 <dd><a href="mobile.html?p=data/weixin-course/chapter01.html" target="_blank">第01章.ZTalk@青龙老贼</a></dd>
 <dd><a href="mobile.html?p=data/weixin-course/chapter02.html" target="_blank">第02章.开发环境的搭建</a></dd>
 <dd><a href="mobile.html?p=data/weixin-course/chapter03.html" target="_blank">第03章.完结篇</a></dd>

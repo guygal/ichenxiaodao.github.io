@@ -114,8 +114,8 @@ var getFileTitle = function(file) {
 };
 
 var i18n_zh_CN = {
-    'weixin-course': '微信公众平台',
-    'iOS-Dev': 'iOS开发',
+    'weixin-course': '微信公众平台开发',
+    'iOS-Dev': 'iOS学习记录',
     'software-lift': '软件人生',
     'version-control': '版本控制',
     'life-is-like-a-play': '人生如戏',
