@@ -1,3 +1,7 @@
+/* about */
+.left{float:left;}
+.right{float:right;}
+
 .article-content {
     padding: 20px;
     font-family: Helvetica,​Arial,​sans-serif;
