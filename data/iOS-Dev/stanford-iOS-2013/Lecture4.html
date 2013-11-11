@@ -1,0 +1,518 @@
+<div title="Lecture 4 笔记与总结" class="article-content">
+  <div class="sign">2013年11月11日</div>
+<h1>
+    Lecture 4 笔记与总结
+</h1>
+<h2>Lecture 4 课程标题：Foundation and Attributed String</h2>
+
+<h3>概述</h3></br>
+差不多都是来自slides，然后加上自己的中文理解。后面有很多也没有完全理解，等以后再慢慢补充吧。</br>
+</br>
+注：由于暂时没有找到Objective-C格式化的JavaScript代码，所以先用C语言来格式化。</br>
+<pre><code data-language="c">
+1、创建对象
+
+1.1、alloc、init
+NSMutableArray *card = [[NSMutableArray alloc] init];
+CardMatchingGame *game = [[CardMatchingGame alloc] initWithCardCound:12 usingDeck:d];
+
+1.2、类方法
+NSString   + (id)stringWithFormat:(NSString *)format, ...
+NSString *moltuae = [NSString stringWithFormat:@"%d", 42];
+UIButton   + (id)buttonWithType:(UIButtonType)buttonType;
+NSMutableArray   + (id)arrayWithCapacity:(int)count;
+NSArray   + (id)arrayWithObject:(id)anObject;
+
+1.3、类方法和init方法可以同时存在
+[NSString stringWithFormat:...] 相当于 [[NSString alloc] initWithFormat:...]
+
+1.4、根据其他对象来创建
+NSString   - (NSString *)stringByAppendingString:(NSString *)otherString;
+NSArray   - (NSString *)componentsJoinedByString:(NSString *)sepatator;
+NSString & NSArray   - (id)mutableCopy;
+
+1.5、也可以根据索引来创建
+NSArray   - (id)lastObject;
+NSArray   - (id)objectAtIndex:(int)index;
+
+
+2、nil
+
+nil调用任何方法都是可以的，只是没有代码被执行而已。
+如果nil调用一个方法，而这个方法的返回值是一个数值的话，那么这个数值会是0。
+int i = [obj methodWhichReturnsAnInt]; //如果obj是nil，那么i = 0
+
+如果方法返回的是一个对象或是结构体的话，那么这个对象会是未定义状态。
+CGPoint p = [obj getLocation]; //如果obj是nil，那么p是一个未定义值
+
+nil是一个对象指针为空，Nil是一个类指针为空，NULL是基本数据类型为空。
+
+
+3、动态绑定
+
+3.1、id是一个重要的类型
+id可以存储任何类的对象。
+id myObject;
+实际上所有对象指针（例如：NSString *）在运行时都是id类型。
+但是在编译时，如果你用已知的数据类型来替代id，这个时候编译器会提示并建议你用适当的类型。
+
+“多态”使不同的类共享相同方法名称的能力。
+“动态类型”能使程序直到运行时才确定对象所属的类。
+“动态绑定”指的就是在运行时才决定实际要调用的对象的方法。
+
+这种动态绑定，并非是不安全的。
+
+3.2、静态类型
+“静态”指的是对存储在变量中对象的类型进行显式声明。
+“静态类型”可以更好地在程序编译时而不是运行时指出错误。
+NSString *s = @"x"; //如果s调用非NSString的方法，编译器将会警告
+id obj = s; //合法的，编译器不会有任何警告
+NSArray *a = obj; //也是合法的，但是显然也是会导致一些问题的。
+
+静态类型和id类型之间是可以相互转化的。
+PlayingCard *otherCard = [otherCards firstObject]; //firstObject返回id
+
+id *  //这是一种错误的写法
+
+
+4、对象类型
+
+@interface Vehicle
+- (void)move;
+@end
+@interface Ship : Vehicle
+- (void)shoot;
+@end
+
+Ship *s = [[Ship alloc] init];
+[s shoot];
+[s move]; //move方法从Vehicle继承而来
+
+Vehicle *v = s; //也是合法的
+[v shoot]; //编译器会警告，尽管在运行时不会crash，因为我们知道实际上v是Ship，但是编译器只知道v是Vehicle
+
+id obj = ...;
+[obj shoot]; //编译器不会警告，因为编译器知道shoot这个方法存在；
+//obj会不会响应这个方法不重要，只是编译器没有足够的信息知道obj一定不能调用shoot这个方法，它就不会警告。
+//如果obj不是Ship的话(或者obj这个对象的类没有实现shoot这个方法)，在运行时的时候会crash
+
+[obj someMethodNameThatNoObjectAnyWhereRespondsTo]; //编译器警告，因为它确定obj对这个方法不会有响应。
+
+NSString *hello = @"hello";
+[hello shoot]; //编译器会警告，因为它知道NSString对象不会响应shoot方法，而且在运行时一定会crash。
+Ship *helloShip = (Ship *)hello; //编译器不会警告，因为用了类型转换。
+[helloShip shoot]； //编译器不会警告，因为helloShip是有shoot这个方法的，但是在运行时一定会crash，因为在运行时helloShip还是会当做NSString来用。
+[(id)hello shoot]; //编译器不会警告，但是运行时会crash。
+
+
+5、动态绑定（续）
+
+5.1、应该在什么时候用动态绑定
+当我们要把来自不同的类的对象放在一个集合里面（例如：NSArray）;
+When we want to support the "blind, structured" communication in MVC (i.e. delegation).
+And there are other generic or blind communication needs.
+But to make these things safer, we're going to use two things: Introspection and Protocols.
+
+5.2、自我检查
+在运行时，询问这个对象是属于哪个类或是这个对象可以调用哪些方法。
+
+5.3、协议
+协议是在id类型和静态类型中间的一种语法。
+不需要指定对象所指向的类，但是需要指定这个对象现实的方法。
+例如：id <UIScrollviewDelegate> scrollViewDelegate;
+
+
+6、有关类的问题
+
+6.1、所有对象都继承自NSObject
+isKindOfClass: 是否这个对象是这个类或它的子类的对象；
+isMemberOfClass: 是否这个对象是这个类的对象；
+respondsToSelector: 是否这个对象响应这个方法
+在运行的时候判断。
+
+6.2、这些方法的参数有点棘手
+Class testing methods take a Class
+你获取一个类，通过调用类方法而不是实例方法。
+if ([obj isKindOfClass:[NSString class]])
+{
+    NSString *s = [(NSString *)obj stringByAppendingString:@"xyzzy"];
+}
+
+6.3、处理动态类型的方法
+- (BOOL)respondsToSelector:Selector //对象是否能够响应selector所指定的方法
++ (BOOL)instancesRespondToSelector:Selector //制定的类实例是否能够响应selector
+if ([obj respondsToSelector:@selector(shoot)])
+{
+    [obj shoot];
+}
+else if([obj respondsToSelector:@selector(shootAt:)])
+{
+    [obj shootAt:target];
+}
+
+在NSObject中：
+- (id)performSelector:selector //应用selector制定的方法
+- (id)performSelector:selector withObject:object //应用selector制定的方法，传递参数object
+例如：
+[obj performSelector:shootSelector];
+[obj performSelector:shootAtSelector withObject:coordinate];
+
+在NSArray中：用makeObjectsPerformSelector:方法
+[array makeObjectsPerformSelector:shootSelector];
+[array makeObjectsPerformSelector:shootAtSelector withObject:target];// target is an id
+
+在UIButton中：
+- (void)addTarget:(id)anObject action:(SEL)action ...;
+[button addTarget:self action:@selector(digitPressed:) ...];
+
+6.4、SEL 是一种针对selector的数据类型
+Objective-C在编译的时候，会根据方法的名字（包括参数序列），生成一个用来区分这个方法的唯一的一个ID，这个ID就是SEL类型的。
+我们需要注意的是，只要方法的名字（包括参数序列）相同，那么它们的ID都是相同的。
+就是说，不管是超类还是子类，不管是有没有超类和子类的关系，只要名字相同那么ID就是一样的。
+
+参考：http://fei263.blog.163.com/blog/static/9279372420121835428560/
+SEL shootSelector = @selector(shoot);
+SEL shootAtSelector = @selector(shootAt:);
+SEL moveToSelector = @selector(moveTo:withPenColor:);
+
+
+7、Foundation Framework
+
+7.1、NSObject
+所有类的基类。
+- (NSString *)description 是一个有用的覆盖方法 (it’s %@ in NSLog()).
+例如： NSLog(@“array contents are %@”, myArray);
+其中 %@ 替代这个方法的结果[myArray description].
+
+拷贝对象是一个需要理解的重要概念（为什么可变或不可变）。
+- (id)copy; //不是所有对象执行机制（否则会发生异常）
+- (id)mutableCopy; //不是所有对象执行机制（否则会发生异常）
+可以使用这些方法创建对象的副本。
+通过实现一个符合<NSCopying>协议（用于制作副本）的方法来完成此任务。
+如果类必须区分要产生对象的是可变副本还是不可变副本，还需要根据<NAMutableCopying>协议实现一个方法。
+
+7.2、NSArray
+对象的有序集合。
+不可变的，当你创建一个数组对象之后，你不能向其中增加或删除对象。
+数组里面的所有对象都是strong。
+通常通过其他数组或是@[]来创建数组。
+
+- (NSUInteger)count; //数组中元素的个数
+- (id)objectAtIndex:(NSUInteger)index; //返回对应索引的元素，如果数组出界将会crash
+- (id)lastObject; //返回数组的最后一个元素，如果没有元素将会返回nil，但不会crash
+- (id)firstObject; //返回数组的第一个元素，如果没有元素将会返回nil，但不会crash
+
+NSArray的一些有趣的方法：
+- (NSArray *)sortedArrayUsingSelector:(SEL)aSelector;
+- (void)makeObjectsPerformSelector:(SEL)aSelector withObject:(id)selectorArgument;
+- (NSString *)componentsJoinedByString:(NSString *)separator;
+
+7.3、NSMutableArray
+可变的数组。
+可以通过 alloc/init 来创建 或者 ...
++ (id)arrayWithCapacity:(NSUInteger)numItems; // numItems is a performance hint only
++ (id)array; // [NSMutableArray array] 相当于 [[NSMutableArray alloc] init]
+
+NSMutableArray 继承所有 NSArray 的方法。
+
+它还实现了这些关键的方法：
+- (void)addObject:(id)object; //在数组的最后添加元素
+- (void)insertObject:(id)object atIndex:(NSUInteger)index; //在索引的位置添加元素
+- (void)removeObjectAtIndex:(NSUInteger)index; //移除索引所在的元素
+
+7.4、Enumeration (枚举)
+通过for-in语句遍历数组
+例如：包含NSString的NSArray
+NSArray *myArray = ...;
+for (NSString *string in myArray) //编译器没办法知道myArray的内容
+{
+    double value = [string doubleValue]; //如果string不是NSString类型，将会crash。
+}
+例如：包含id对象的NSArray
+NSArray *myArray = ...;
+for (id obj in myArray)
+{
+    //通过if来确定你不会调用NSString不会响应的方法
+    if ([obj isKindOfClass:[NSString class]])
+    {
+        //obj调用NSString的方法将不会有任何问题
+    }
+}
+
+通过健或者值遍历Dictionary
+例如:
+NSDictionary *myDictionary = ...;
+for (id key in myDictionary)
+{
+    // 在这里操作key
+    id value = [myDictionary objectForKey:key];
+    // 在这里操作value
+}
+
+7.5、NSNumber
+对象封装原始数据类型，例如int，float，double，BOOL，enum,等等。
+NSNumber *n = [NSNumber numberWithInt:36];
+float f = [n floatValue]; // 将会返回36.0，通过类型转换
+这是非常有用的当你先要把原始数据类型放入NSArray或NSDictionary。
+
+iOS6 创建NSNumber的新方法: @()
+NSNumber *three = @3;
+NSNumber *underline = @(NSUnderlineStyleSingle); // 枚举
+NSNumber *match = @([card match:@[otherCard]]); // [card match:@[otherCard]]表达式返回一个原始数据类型
+
+7.6、NSValue
+普通对象封装一些非对象、非原始数据，例如：C语言的结构体。
+举例：NSValue *edgeInsetsObject = [NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(1,1,1,1)]
+Probably don’t need this in this course (maybe when we start using points, sizes and rects).
+
+7.7、NSData & NSDate
+使用文件时，需要频繁地将数据读入到一个临时存储区，这个临时存储区通常称为缓冲区。
+当收集数据，以便随后将这些数据输出到文件中时，通常也是用存储区。
+NSData类提供了一种简单的方式，它用来设置缓冲区，将文件的内容读入缓冲区，或将缓冲区的内容写到一个文件。
+NSMutableData可以定义可变的缓冲区。
+
+NSDate：用来获取现在的时间，或存储过去或将来的时间或日期。
+参考：NSCalendar, NSDateFormatter, NSDateComponents.
+如果你要在你的UI里面展示数据，请确保你掌握它的详细的本地化相关。
+
+7.8、NSSet / NSMutableSet
+类似数组，但是无序的。
+NSSet、NSMutableSet、NSIndexSet、NSCountedSet
+
+7.9、NSOrderedSet / NSMutableOrderedSet
+介于NSArray和NSSet之间。
+
+7.10、NSDictionary
+词典对象是由键-值对象对组成的数据集合。
+所有的健-值都是strong。
+创建语法: @{ key1 : value1, key2 : value2, key3 : value3 }
+NSDictionary *colors = @{ @“green” : [UIColor greenColor],
+                          @“blue” : [UIColor blueColor],
+                          @“red” : [UIColor redColor] };
+Lookup using “array like” notation ...
+NSString *colorString = ...;
+UIColor *colorObject = colors[colorString]; // 类似于objectForKey: below
+
+- (NSUInteger)count;
+- (id)objectForKey:(id)key; // key must be copyable and implement isEqual: properly
+NSStrings make good keys because of this.
+See NSCopying protocol for more about what it takes to be a key.
+
+7.11、NSMutableDictionary
+可变的NSDictionary。
+通过 alloc/init 来创建，或者 + (id)dictionary... 类方法。
+除此之外，继承NSDictionary的所有方法
+一些重要的方法：
+- (void)setObject:(id)anObject forKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)removeAllObjects;
+- (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary;
+
+7.12、Property List（属性列表）
+参考：
+http://www.cnblogs.com/haichao/archive/2012/11/16/2774001.html
+https://developer.apple.com/library/mac/documentation/cocoa/conceptual/PropertyLists/AboutPropertyLists/AboutPropertyLists.html
+在真正的应用程序中，对于用到的外在静态项目，我们是把它们放在一个文件或数据库中或其他地方。
+在iOS编程，有一种这种类型文件叫做属性列表(Property List)。
+在Mac OS和iOS，这种文件通常用于存储简单的结构化数据（如应用程序设置）。
+>如何把静态数据转换为属性列表
+>如何从属性列表读取数据
+
+属性列表文件是一种XML文件，数组和词典等都可以与属性列表文件互相转换。
+NSArray和NSDictionary提供了读写属性列表文件的方法。
+
+7.13、NSUserDefaults
+参考：
+http://blog.csdn.net/enuola/article/details/7959767
+轻量级本地数据存储。仅仅存储一些小数据类似用户的配置信息。
+从根本上来说，NSDictionary在程序运行的时候会持续存在。
+通过standardUserDefaults...来读写。
+[[NSUserDefaults standardUserDefaults] setArray:rvArray forKey:@"RecentlyViewed"];
+方法示例：
+- (void)setDouble:(double)aDouble forKey:(NSString *)key;
+- (NSInteger)integerForKey:(NSString *)key; // NSInteger is a typedef to 32 or 64 bit int
+- (void)setObject:(id)obj forKey:(NSString *)key; //obj必须是一个Property List
+- (NSArray *)arrayForKey:(NSString *)key; //如果key对应的value不是NSArray，将会返回nil。
+Always remember to write the defaults out after each batch of changes!
+[[NSUserDefaults standardUserDefaults] synchronize];
+
+7.14、NSRange
+C语言的结构体，不是一个类。
+Used to specify subranges inside strings and arrays (et. al.).
+typedef struct{
+    NSUInteger location; //一个以0开始的index,
+    NSUInteger length; //表示对象的长度
+} NSRange;
+NSNotFound是location的一个重要的值。
+NSString *greeting = @“hello world”;
+NSString *hi = @“hi”;
+NSRange r = [greeting rangeOfString:hi]; // 在greeting里面找hi
+if (r.location == NSNotFound)
+{
+    /* 在greeting里面找不到hi */
+}
+
+NSRangePointer (just an NSRange * ... used as an out method parameter).
+C语言的函数：NSEqualRanges(), NSMakeRange()
+
+
+8、Colors
+UIColor 表示颜色的对象。
+可以通过RGB、HSB甚至一个图样（比如UIImage）来创建颜色类。
+Colors也有alpha (UIColor *color = [otherColor colorWithAlphaComponent:0.3])。
+A handful of “standard” colors have class methods (e.g. [UIColor greenColor])。
+一些系统颜色也有相应的类方法 (e.g. [UIColor lightTextColor])。
+
+
+9、Fonts
+
+9.1、UIFont
+Fonts in iOS 7 are very important to get right.
+最好通过文字的样式来获取一个UIFont ...
+UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+一些其他的样式 (参考 UIFontDescriptor 文档，了解更多的样式) ...
+UIFontTextStyleHeadline, UIFontTextStyleCaption1, UIFontTextStyleFootnote, etc.
+
+也有一个系统的样式。
+它们被用于按钮的标题。
++ (UIFont *)systemFontOfSize:(CGFloat)pointSize;
++ (UIFont *)boldSystemFontOfSize:(CGFloat)pointSize;
+对应用户的内容，你应该用preferredFontForTextStyle:
+
+9.2、UIFontDescriptor
+字体都是艺术家设计的。
+
+Understand that a best match for a “bold” font may not be bold if there’s no such designed face.
+
+You can get a font descriptor from an existing UIFont with this UIFont method ...
+- (UIFontDescriptor *)fontDescriptor;
+You might well have gotten the original UIFont using preferredFontForTextStyle:.
+
+Then you might modify it to create a new descriptor with methods in UIFontDescriptor like ...
+- (UIFontDescriptor *)fontDescriptorByAddingAttributes:(NSDictionary *)attributes;
+(the attributes and their values can be found in the class reference page for UIFontDescriptor)
+You can also create a UIFontDescriptor directly from attributes (though this is rare) using ...
++ (UIFontDescriptor *)fontDescriptorWithFontAttributes:(NSDictionary *)attributes;
+
+只有当你有UIFontDescriptor来描述你需要的字体, 用这个UIFont方法:
++ (UIFont *)fontWithDescriptor:(UIFontDescriptor *)descriptor size:(CGFloat)size;
+(specify size of 0 if you want to use whatever size is in the descriptor)
+You will get a “best match” for your descriptor given available fonts and their faces.
+
+举例：
+我们来获取粗体字...
+UIFont *bodyFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+UIFontDescriptor *existingDescriptor = [bodyFont fontDescriptor];
+UIFontDescriptorSymbolicTraits traits = existingDescriptor.symbolicTraits;
+traits |= UIFontDescriptorTraitBold;
+UIFontDescriptor *newDescriptor = [existingDescriptor fontDescriptorWithSymbolicTraits:traits];
+UIFont *boldBodyFont = [UIFont fontWithFontDescriptor:newDescriptor size:0];
+
+This will do the best it can to give you a bold version of the UIFontTextStyleBody preferred font.
+It may or may not actually be bold.
+
+9.3、Symbolic Traits
+斜体, 粗体, Condensed, etc., are important enough to get their own API in UIFontDescriptor ...
+- (UIFontDescriptorSymbolicTraits)symbolicTraits;
+- (UIFontDescriptor *)fontDescriptorWithSymbolicTraits:(UIFontDescriptorSymbolicTraits)traits;
+一些特例，参考UIFontDescriptor文档。
+UIFontDescriptorTraitItalic, UIFontDescriptorTraitBold, UIFontDescriptorTraitCondensed, etc.
+
+10、Attributed String
+
+10.1、How text looks on screen
+The font has a lot to do with how text looks on screen.
+But there are other determiners (color, whether it is “outlined”, stroke width, underlining, etc.).
+You put the text together with a font and these other determiners using NSAttributedString.
+
+10.2、NSAttributedString
+Think of it as an NSString where each character has an NSDictionary of “attributes”.
+The attributes are things like the font, the color, underlining or not, etc., of the character.
+It is not, however, actually a subclass of NSString (more on this in a moment).
+
+10.3、Getting Attributes
+You can ask an NSAttributedString all about the attributes at a given location in the string.
+- (NSDictionary *)attributesAtIndex:(NSUInteger)index
+                     effectiveRange:(NSRangePointer)range;
+The range is returned and it lets you know for how many characters the attributes are identical.
+There are also methods to ask just about a certain attribute you might be interested in.
+NSRangePointer is essentially an NSRange *. It’s okay to pass NULL if you don’t care.
+
+10.4、NSAttributedString is not an NSString
+It does not inherit from NSString, so you cannot use NSString methods on it.
+If you need to operate on the characters, there is this great method in NSAttributedString ...
+- (NSString *)string;
+
+For example, to find a substring in an NSAttributedString, you could do this ...
+NSAttributedString *attributedString = ...;
+NSString *substring = ...;
+NSRange r = [[attributedString string] rangeOfString:substring];
+
+The method string is guaranteed to be high performance but is volatile.
+If you want to keep it around, make a copy of it.
+
+10.5、NSMutableAttributedString
+Unlike NSString, we almost always use mutable attributed strings.
+
+10.6、Adding or setting attributes on the characters
+You can add an attribute to a range of characters ...
+- (void)addAttributes:(NSDictionary *)attributes range:(NSRange)range;
+... which will change the values of attributes in attributes and not touch other attributes.
+Or you can set the attributes in a range ...
+- (void)setAttributes:(NSDictionary *)attributes range:(NSRange)range;
+... which will remove all other attributes in that range in favor of the passed attributes.
+You can also remove a specific attribute from a range ...
+- (void)removeAttribute:(NSString *)attributeName range:(NSRange)range;
+
+10.7、Modifying the contents of the string (changing the characters)
+You can do that with methods to append, insert, delete or replace characters.
+Or call the NSMutableAttributedString method - (NSMutableString *)mutableString
+and modify the returned NSMutableString (attributes will, incredibly, be preserved!).
+
+10.8、So what kind of attributes are there?
+UIColor *yellow = [UIColor yellowColor];
+UIColor *transparentYellow = [yellow colorWithAlphaComponent:0.3];//黄色背景
+
+  @{ NSFontAttributeName:
+         [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]//黑色
+     NSForegroundColorAttributeName:[UIColor greenColor],//绿色
+     NSStrokeWidthAttributeName:@-5,
+     NSStrokeColorAttributeName:[UIColor orangeColor], //橘色边框
+     NSUnderlineStyleSingle:@(NSUnderlineStyleSingle), //绿色下划线 NSUnderlineStyleSingle//没有下划线
+     NSBackgroundColorAttributeName:transparentYellow} //黄色背景
+
+
+11、NSAttributedString
+
+11.1、Where do attributed strings get used?
+UIButton’s - (void)setAttributedTitle:(NSAttributedString *)title forState:...;
+UILabel’s @property (nonatomic, strong) NSAttributedString *attributedText;
+UITextView’s @property (nonatomic, readonly) NSTextStorage *textStorage;
+
+11.2、UIButton
+Attributed strings on buttons will be extremely use for your homework.
+11.3、Drawing strings directly
+Next week we’ll see how to draw things directly on screen.
+NSAttributedStrings know how to draw themselves on screen, for example ...
+- (void)drawInRect:(CGRect)aRect;
+
+
+12、UILabel
+
+12.1、UILabel
+You have been setting its contents using the NSString property text.
+But it also has a property to set/get its text using an NSAttributedString ...
+@property (nonatomic, strong) NSAttributedString *attributedText;
+
+12.2、Note that this attributed string is not mutable
+So, to modify what is in a UILabel, you must make a mutableCopy, modify it, then set it back
+NSMutableAttributedString *labelText = [myLabel.attributedText mutableCopy];
+[labelText setAttributes:...];
+myLabel.attributedText = labelText;
+
+12.3、Don’t need this very often
+There are properties in UILabel like font, textColor, etc., for setting look of all characters.
+The attributed string in UILabel would be used mostly for “specialty labels”.
+
+</code></pre>
+</div>
