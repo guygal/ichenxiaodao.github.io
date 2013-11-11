@@ -89,6 +89,18 @@
             "text": "软件人生",
             "children": [
                 {
+                    "id": "programming-language",
+                    "text": "编程语言",
+                    "children": [
+                        {
+                            "id": "lua-syntax.html",
+                            "text": "快速掌握Lua语法",
+                            "leaf": true
+                        }
+                    ],
+                    "expanded": false
+                },
+                {
                     "id": "version-control",
                     "text": "版本控制",
                     "children": [

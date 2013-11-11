@@ -1,0 +1,107 @@
+<div title="快速掌握Lua语法" class="article-content">
+  <div class="sign">2013年11月12日</div>
+<h1>
+    快速掌握Lua语法
+</h1>
+
+<pre><code data-language="lua">
+--[[                                    
+  _                                     
+ | |    _   _  __ _
+ | |   | | | |/ _` |
+ | |___| |_| | (_| |
+ |_____|\__,_|\__,_|
+
+--]]
+
+-------- Variables
+a = 1                                   -- global
+local a = 1                             -- local
+
+a = 5.0                                 -- number
+b = true                                -- boolean
+a = "hello"                             -- string
+a = { 5, "hello", 3.1415 }              -- table
+
+-------- Functions
+foo = function() block end              -- function are variables
+function foo() block end                -- other way to write it
+return 5, "hello"                       -- return multiple values
+
+-------- Tests
+if expr then block end
+if expr then block else block end
+if expr then block elseif expr then block end
+
+-------- Logical operators
+not   or   and
+
+-------- Relational operators
+==    <     >     <=    >=
+~=                                      -- not equal
+-------- Arithmetic operators
+5 == 5.0                                -- unique type for numbers
++   -   *   /
+%                                       -- modulo
+^                                       -- exponential
+-------- Loops
+for i=start,finish[,step] do block end  -- i goes from start to finish (included)
+for i,v in ipairs(t) do block end       -- parses table by index (table can have holes)
+for key,v in pairs(t) do block end      -- hash table parsing
+while expr do block end
+repeat block until expr end
+break                                   -- can be called from anywhere insisde a loop (unlike return)
+
+-------- Tables
+t = {}                                  -- empty table
+t = { 17, 5, 8 }                        -- t[1]=17; t[2]=5; t[3]=8
+t = { 45, "hello", y }                  -- t[1]=45; t[2]="hello"; t[3]=y
+t = { x=2 }                             -- t.x=2 or t["x"]=2
+t = { f(1)=g, [30]=23, x=1 }            -- t[f(1)]=g; t[30]=23; t.x=1
+t = { hello=5, "say hello"="hi" }       -- t.hello=5; t["say hello"]="hi"
+
+t.x=1                                   -- set entry "x" to 1
+t["x"]=1                                -- same as above
+#t                                      -- length of table t
+
+-------- Strings
+"hello" == 'hello'
+s = "hello, ".."world"                  -- concatenation
+s = string.format( "FPS: %.4f", fps )   -- formating (same as print)
+s = ""..x                               -- convert to string
+x = 0+"3.1415"                          -- convert to number
+#s                                      -- length of string s
+print( "hello, world!\n" )              -- hello, world
+
+-------- WARNING
+x = x+1                                 -- there's no prefix operator (+=, -=, *=, ..etc)
+v1 = v2                                 -- vectors are not copied but referenced
+table1 = table2                         -- tables are not copied but referenced
+return x end                            -- return can only be called before an "end" (ex: do return end)
+t[1]                                    -- in Lua tables start at index 1
+for i=1,10 do block end                 -- i is local to the loop, and goes from 1 to 10 (included)
+
+-------- Advices
+local myVar                             -- prefer local variables over globals (faster and less error prone)
+
+-------- Special features
+local a, b, c = 5, "hello", 8.16        -- multi variable assignement
+x, y = y, x                             -- swapping values
+t = { 17, 5; 8, }                       -- ; is a valid separator, and last element can be followed by ,
+function foo( arg1, ... ) block end     -- function with variable arguments
+x,y = ...                               -- x gets the first vararg, and y the second
+do block end                            -- empty statement
+_                                       -- valide variable name (often used as a placeholder)
+;                                       -- semicolon as instructions separator is optionnal
+                                        -- as well as the carriage return
+o:Normalize(x) == o.Normalize(o,x)      -- syntactic sugar
+foo a == foo(a)                         -- syntactic sugar if function has only 1 arg
+foo {a,b,c} == foo({a,b,c})             -- consequence of above syntactic sugar
+a = expr and a1 or b2                   -- a = expr? a1:a2; (ternary operator)
+
+-------- Modules
+require "blabla.lua"                    -- same as #include
+loadlib("myPlugin.dll", "entryFunc")    -- loads .dll and execute entryFunc
+
+</code></pre>
+</div>
